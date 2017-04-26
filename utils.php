@@ -105,13 +105,13 @@ class Utils {
               $books[$i]['author'] = '';
           }
           if (!array_key_exists('rating', $ebook)) {
-              $books[$i]['rating'] = 0;
+              $books[$i]['rating'] = 'No rating';
           }
           if (!array_key_exists('description', $ebook)) {
               $books[$i]['description'] = 'There is no description for this book.';
           }
           if (!array_key_exists('thumbnail', $ebook)) {
-              $books[$i]['thumbnail'] = 'http://books.google.ie/googlebooks/images/no_cover_thumb.gif';
+              $books[$i]['thumbnail'] = 'images/no-cover.png';
           }
           if (!array_key_exists('year', $ebook)) {
               $books[$i]['year'] = '';
@@ -136,12 +136,12 @@ class Utils {
                     if(isset($item['volumeInfo']['averageRating']))
                         $rating =  $item['volumeInfo']['averageRating'];
                     else
-                        $rating = 0;
+                        $rating = 'No rating';
 
                     if(isset($item['volumeInfo']['imageLinks']['thumbnail']))
                         $thumb =  $item['volumeInfo']['imageLinks']['thumbnail'];
                     else
-                        $thumb = 'http://books.google.ie/googlebooks/images/no_cover_thumb.gif';
+                        $thumb = 'images/no-cover.png';
 
                     if(isset($item['volumeInfo']['publishedDate']))
                         $year_published =  '('.substr($item['volumeInfo']['publishedDate'],0,4). ')';
@@ -188,6 +188,69 @@ class Utils {
               return ($arr1[$field] > $arr2[$field]) ? 1 : -1;
       });
       return $books;
+    }
+
+    public function getBookListHTML($sortedBooks, $listType) {
+        $html = '';
+        foreach ($sortedBooks as $book) {
+            if ($listType === 'list')
+                $html .= $this->getListViewItem($book);
+            else
+                $html .= $this->getGridViewItem($book);
+        }
+        return $html;
+    }
+
+    function getGridViewItem($book) {
+        $recentStyle = (strtotime(date('c')) - (strtotime($book['modified'])) < 259200) ? 'item_recent' : 'item';
+        $rating = ($book['rating'] == 'No rating') ? 'No rating' : ($book['rating'].' ★ 5');
+        $smallerTitle = (substr($book['title'], - 5) == '.mobi') ? 'title_smaller' : '';
+
+        $gridHTML = '<div class="'.$recentStyle.'">
+            <div class="book">
+                <div class="thumbnail">
+                    <a href="details.php?isbn='.$book['isbn'].'">
+                        <img src="'.$book['thumbnail'].'" border="0" width="128" height="156" alt="thumbnail"/>
+                    </a>
+                </div>
+                <div class="desc">
+                    <span class="rating">'.$rating.'</span><br />
+                    <a href="details.php?isbn='.$book['isbn'].'">
+                        <span class="title '.$smallerTitle.'">'.$book['title'].'</span>
+                    </a><br />';
+                    if ($book['author'])
+                        $gridHTML .= '<span class="author">'.$book['author'].'</span><br />';
+                    $gridHTML .= '<img src="images/lang/'.$book['lang'].'.gif" />
+                </div>
+            </div>
+        </div>';
+        return $gridHTML;
+    }
+
+    function getListViewItem($book) {
+        $recentStyle = (strtotime(date('c')) - (strtotime($book['modified'])) < 259200) ? 'item_recent' : 'item';
+        $rating = ($book['rating'] == 'No rating') ? 'No rating' : 'Rating <br />'.($book['rating'].' / 5');
+        return '<div class="'.$recentStyle.'">
+		        <div class="book_list">
+                <div class="thumbnail_list">
+                    <a href="details.php?isbn='.$book['isbn'].'">
+                        <img src="'.$book['thumbnail'].'" border="0" width="72" height="110" alt="thumbnail" />
+                    </a>
+                </div>
+                <div class="desc_list">
+                    <div class="rating">'.$rating.'</div>
+                    <a href="details.php?isbn='.$book['isbn'].'">
+                        <span class="title_list">'.$book['title'].'</span>
+                    </a><br />
+                    <span class="author_list">'.$book['author'].'</span><br/>
+                    <a href="index.php?sort=language&display=list"><img src="images/lang/'.$book['lang'].'.gif" /></a>
+                    '.$book['year'].' - 
+                    <a href="index.php?sort=pages&display=list" class="publisher">'.$book['pages'].' pages</a><br />
+                    <span class="modified">Last Modified: '.$book['modified'].'</span><br/>
+                    <p>'.$book['description'].'</p>
+				        </div>
+            </div>
+				</div>';
     }
 }
 

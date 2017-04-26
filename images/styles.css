@@ -1,85 +1,84 @@
+body {
+	font-family: 'Helvetica Neue', 'Roboto', Arial, sans-serif;
+	padding: 0px;
+	margin: 0px;
+}
+
 a:link {
 	text-decoration: none;
-	}
+}
+
+/* Top menu  */
 
 #library-menu {
 	height: 70px;
-	
 	border: 2px solid #000;
 	color: #FFF;
-	
-	background: rgb(30,87,153); /* Old browsers */
-	background: -moz-linear-gradient(top, rgba(30,87,153,1) 0%, rgba(41,137,216,1) 50%, rgba(32,124,202,1) 51%, rgba(125,185,232,1) 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(30,87,153,1)), color-stop(50%,rgba(41,137,216,1)), color-stop(51%,rgba(32,124,202,1)), color-stop(100%,rgba(125,185,232,1))); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top, rgba(30,87,153,1) 0%,rgba(41,137,216,1) 50%,rgba(32,124,202,1) 51%,rgba(125,185,232,1) 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top, rgba(30,87,153,1) 0%,rgba(41,137,216,1) 50%,rgba(32,124,202,1) 51%,rgba(125,185,232,1) 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top, rgba(30,87,153,1) 0%,rgba(41,137,216,1) 50%,rgba(32,124,202,1) 51%,rgba(125,185,232,1) 100%); /* IE10+ */
-	background: linear-gradient(to bottom, rgba(30,87,153,1) 0%,rgba(41,137,216,1) 50%,rgba(32,124,202,1) 51%,rgba(125,185,232,1) 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=0 ); /* IE6-9 */
-		
+	background: #1e5799
 }
 
-a.sorting:link,a.sorting:visited{
-	display: block;
-	padding: 15px;
-	padding-top: 25px;
-	height: 30px;
-	color: #FFF;
-	font-weight: bold;
-	font-size: 14px;
-	text-decoration: none;
-}
-
-a.sorting:hover,a.sorting:active
-{
-	background-color:#1E5799;
-}
-
-a.view:link,a.view:visited{
-	display: block;
-	height: 30px;
-	padding-top: 10px;
-	padding-bottom: 30px;
-	padding-left:10px;
-	padding-right: 10px;
-	color: #FFF;
-	font-weight: bold;
-	font-size: 14px;
-	text-decoration: none;
-}
-
-a.view:hover,a.view:active
-{
-	background-color:#1E5799;
-}
-
-ul.sorting {
+#library-menu > ul {
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
-}	
+	overflow: hidden;
+}
 
-li.sorting {
-	display: inline;
+#library-menu li {
 	float: left;
 }
 
+#library-menu li:hover, #library-menu li:active {
+	background-color:#A63B31;
+}
 
+#library-menu a:link, 
+#library-menu a:visited {
+	height: 35px;
+	display: block;
+	padding: 10px;
+	color: #FFF;
+	font-weight: bold;
+	font-size: 14px;
+	text-decoration: none;
+}
 
-#view_container {
+#library-menu a.menu-link, 
+#library-menu a.menu-link {
+	padding-top: 25px;
+}
+
+#library-menu li.icon-link {
+	height: 70px;
+}
+#library-menu li.icon-link > a {
+	padding-top: 15px;
+	font-size: 45px;
+}
+
+/* Listed Items */
+
+.item {
+	border: 5px #1e5799 solid;
+	min-height: 260px;
 	float: left;
-	margin-right: 10px;
-	}
+	display: block;
+	margin: 5px;
+	padding: 5px;
+}
 
-#sorting_container {
-	display: inline-block;
-	float: left;
-	padding-right: 10px;
-	padding-left: 15px;
-	}
+.item_recent:hover {
+	background-color: #3D2D19;
+	border: 5px #999 groove;
+}
 
-.item_recent{
-	background-color: #FF9;
+.item:hover {
+	background-color: #A63B31;
+	border: 5px #1e5799 groove;
+}
+
+.item_recent {
+	background-color: #3D2D19;
 	border: 5px #999 dashed;
 	height: 260px;
 	float: left;
@@ -87,69 +86,57 @@ li.sorting {
 	display: inline-block;
 	margin: 5px;
 	padding: 5px;
-	}
+}
 
-.item_recent:hover {
+.list_item_recent {
 	background-color: #FF9;
-	border: 5px #999 groove;
-	}
-
-.item {
-	background-color: #EEE;
-	border: 5px #999 solid;
-	height: 260px;
-	float: left;
-	width: 150px;
-	display: inline-block;
-	margin: 5px;
-	padding: 5px;
-	}
-
-.item:hover {
-	background-color: #E9E9E9;
-	border: 5px #999 groove;
-	}
-
-.list_item_recent{
-	background-color: #FF9;
-	border: 2px #999 dashed;
+	border: 2px #1e5799 dashed;
 	display: inline-block;
 	margin: 5px;
 	padding: 5px;
 	clear:both;
 	width: 95%;
-	}
+}
 	
 .list_item_recent:hover {
 	background-color: #FF9;
-	border: 2px #999 groove;
-	}
+	border: 2px #1e5799 groove;
+}
 
 .list_item {
 	background-color: #FFF;
-	border: 2px #999 solid;
+	border: 2px #1e5799 solid;
 	display: inline-block;
 	margin: 5px;
 	padding: 5px;
 	clear:both;
 	width: 95%;
-	}
+}
 
 .list_item:hover {
-	background-color: #E9E9E9;
-	border: 2px #999 groove;
-	}
+	background-color: #A63B31;
+	border: 2px #1e5799 groove;
+}
+
+.books_header {
+	padding-left: 5px;
+	font-size: 16px;
+	margin-top: 0px;
+}
 
 .book {
 	width: 150px;
 	text-align: center;
-	}
+}
 
 .book_list {
 	text-align: center;
 	clear: both;
-	}
+}
 
+.books_container {
+	padding: 20px;
+}
 
 .book_detailed {
 	width: 475px;
@@ -159,7 +146,6 @@ li.sorting {
 	}
 	
 .thumbnail {
-	border: 1px #000 solid;
 	text-align: center;
 	width: 128px;
 	margin-left: 11px;
@@ -210,13 +196,13 @@ li.sorting {
 	float: right;
 	}
 
-.description{
+.description {
 	width: 300px;
 	text-align: center;
 	margin-top: 10px;
 	border: 1px #000 solid;
 	float: right;
-	}
+}
 	
 .thumb_border{
 	border: 1px #000 solid;
@@ -244,11 +230,11 @@ li.sorting {
 	color: #CC713C;
 	}
 
-.rating{
+.rating {
 	font-size: 14px;
-	}
+}
 
-div.rating{
+div.rating {
 	float: right;
 	font-size: 14px;
 	text-align: center;
@@ -257,10 +243,11 @@ div.rating{
 	font-family: 'Spicy Rice', cursive;
 	background:url(star.png) no-repeat center;
 	height: 64px;
-	}
+	width: 60px;
+}
 
 
-.publisher{
+.publisher {
 	font-size: 11px;
 	color: #666;
 	font-family: Verdana, Geneva, sans-serif;
@@ -272,7 +259,7 @@ div.rating{
 	font-size:12px;
 	color: #000;
 	text-decoration: none;
-	}
+}
 
 .title_list {
 	font-weight: bold;
@@ -280,28 +267,13 @@ div.rating{
 	font-size:15px;
 	color: #000;
 	text-decoration: none;
-	}
+}
+
+.title_smaller {
+	font-size: 9px;
+}
 	
-.modified{
+.modified {
 	font-size: 10px;
 	color: #333;
-	}
-
-#dropbox {
-	width: 325px;
-	height: 100px;
-	border: 2px dashed #DDD;
-	-moz-border-radius: 8px;
-	-webkit-border-radius: 8px;
-	background-color: #FEFFEC;
-	text-align: center;
-	color: #BBB;
-	font-size: 2em;
-	font-family: Arial, sans-serif;
-}
- 
-#droplabel {
-	position: relative;
-	top: 40%;
-	font-size: 18px;
 }
