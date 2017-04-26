@@ -1,6 +1,6 @@
 <?php
 
-/*	
+/*
   Book Entry Headings:
   - ISBN
   - LANG
@@ -18,12 +18,12 @@ class Utils {
 
     public $numberOfQueries;
     public $totalBooks;
-    
+
     public function makeUrlRequest($url) {
-        if (!function_exists('curl_init')){ 
+        if (!function_exists('curl_init')){
             die('CURL is not installed!');
         }
-    
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -31,7 +31,7 @@ class Utils {
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);    // 2 is the default so this is not required
 
         $output = curl_exec($ch);
-        
+
         if($output === false)
         {
             echo 'Curl error #'.curl_errno($ch).': ' . curl_error($ch);
@@ -44,7 +44,7 @@ class Utils {
         if(!isset($path)) {
             $path = '.';
         }
-  
+
         if ($handle = opendir($path)) {
           while (false !== ($file = readdir($handle))) {
                 if ($file != '.' && $file != '..') {
@@ -69,19 +69,19 @@ class Utils {
                   'modified' => date('c', filectime($filename)));
             }
         }
-        
+
         return $books;
     }
 
     function getISBNQueries($books) {
-      /* Get number of Google Book queries */ 
+      /* Get number of Google Book queries */
       $this->totalBooks = count($books);
       $this->numberOfQueries = intval($this->totalBooks / 10);
       if ($this->totalBooks / 10 > intval($this->totalBooks / 10))
           $this->numberOfQueries += 1;
-      
+
       $queries = array();
-      
+
       for ($i = 0; $i < $this->numberOfQueries; $i++) {
           $url = 'https://www.googleapis.com/books/v1/volumes?country=US&q=isbn:';
           $url .= $books[(10 * $i)]['isbn'];
@@ -96,7 +96,7 @@ class Utils {
     }
 
     function fillInBlanks($books) {
-      
+
       foreach($books as $i => $ebook ) {
           if (!array_key_exists('title', $ebook) || $ebook['title'] == '') {
               $books[$i]['title'] = $books[$i]['filename'];
@@ -130,7 +130,7 @@ class Utils {
         foreach ($queries as $query) {
             $response = $this->makeUrlRequest($query);
             $resp = json_decode($response, true);
-            
+
             if(isset($resp['items'])){
                 foreach($resp['items'] as $item) {
                     if(isset($item['volumeInfo']['averageRating']))
@@ -142,7 +142,7 @@ class Utils {
                         $thumb =  $item['volumeInfo']['imageLinks']['thumbnail'];
                     else
                         $thumb = 'http://books.google.ie/googlebooks/images/no_cover_thumb.gif';
-                    
+
                     if(isset($item['volumeInfo']['publishedDate']))
                         $year_published =  '('.substr($item['volumeInfo']['publishedDate'],0,4). ')';
                     else
@@ -178,6 +178,16 @@ class Utils {
             }
         }
         return $this->fillInBlanks($myBooks);
+    }
+
+    public function sort($books, $field) {
+      usort($books, function($arr1, $arr2) use ($field) {
+          if ($field === 'rating' || $field === 'modified')
+              return ($arr1[$field] < $arr2[$field]) ? 1 : -1;
+          else
+              return ($arr1[$field] > $arr2[$field]) ? 1 : -1;
+      });
+      return $books;
     }
 }
 
