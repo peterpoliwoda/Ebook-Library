@@ -192,7 +192,6 @@ a:link {
 .desc_detailed {
 	width: 300px;
 	text-align: center;
-	border: 1px #000 solid;
 	float: right;
 	}
 
@@ -200,8 +199,8 @@ a:link {
 	width: 300px;
 	text-align: center;
 	margin-top: 10px;
-	border: 1px #000 solid;
 	float: right;
+	text-align: justify; 
 }
 	
 .thumb_border{
@@ -277,6 +276,8 @@ div.rating {
 	font-size: 10px;
 	color: #333;
 }
+
+/* Goodreads widget details page */
 
 #goodreads-widget {
 	font-family: georgia, serif;

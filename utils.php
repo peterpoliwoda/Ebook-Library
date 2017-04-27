@@ -277,7 +277,8 @@ class Utils {
             <div class="thumbnail_detailed">
             <div class="thumb_border">
                 <a href="'.$book['filename'].'">
-                    <img src="'.$book['thumbnail'].'" border="0" width="128" height="156" alt="thumb"/>
+                    <img src="'.$book['thumbnail'].'" border="0" width="128" height="156" alt="thumb"/> <br/>
+                    Download
                 </a>
             </div>
                 <div class="more_info">
