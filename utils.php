@@ -56,6 +56,24 @@ class Utils {
         return $files;
     }
 
+    public function getBook($isbn) {
+        $listAll = $this->getFolderContents('.');
+        $book = array();
+        foreach ($listAll as $filename) {
+            if (substr($filename, - 5) === '.mobi') {
+                $fileISBN = explode('_', $filename);
+                if ($fileISBN[1] == $isbn) {
+                    $book[] = array('lang' => $fileISBN[0],
+                    'isbn' => $fileISBN[1],
+                    'filename' => $filename,
+                    'modified' => date('c', filectime($filename)));
+                    break;
+                }
+            }
+        }
+        return $this->getBooksFromGoogle($book)[0];
+    }
+
     public function getBooks() {
         $bookFiles = $this->getFolderContents('.');
         $books = array();
@@ -251,6 +269,49 @@ class Utils {
 				        </div>
             </div>
 				</div>';
+    }
+
+    public function showBookDetails($book) {
+        $rating = ($book['rating'] == 'No rating') ? 'No rating' : 'Rating <br />'.($book['rating'].' / 5');
+        print_r('<div class="book_detailed">
+            <div class="thumbnail_detailed">
+            <div class="thumb_border">
+                <a href="'.$book['filename'].'">
+                    <img src="'.$book['thumbnail'].'" border="0" width="128" height="156" alt="thumb"/>
+                </a>
+            </div>
+                <div class="more_info">
+                    <p><a href="http://www.goodreads.com/book/isbn/'.$book['isbn'].'" title="Goodreads">
+                    <img src="images/read_reviews_goodreads.png" border="0"></a></p>			
+                    <p><a href="https://books.google.com/books?isbn='.$book['isbn'].'" title="Google Books">
+                    <img src="images/google_books.png" border="0"></a></p>			
+                </div>
+            </div>
+            
+            <div class="desc_detailed">
+                <strong>'.$book['title'].'</strong><br>
+                <span class="author">'.$book['author'].'</span><br />
+            <span class="publisher">'
+                // .$publisher.' '.$item['volumeInfo']['publishedDate']
+                .' - '.$book['pages'].' pages
+            </span><br />
+            <img src="images/lang/'.$book['lang'].'.gif" /><br />
+                <span class="rating">'.$rating.'</span> <br />
+            </div>
+            <div class="description">
+                '.$book['description'].'
+            </div>
+        </div>');
+    }
+
+    public function showGoodreadsComments($isbn) {
+        print_r('<div>
+    	<div id="goodreads-widget">
+            <div id="gr_header"><h1><a href="#">Goodreads reviews</a></h1></div>
+                <iframe id="the_iframe" src="http://www.goodreads.com/api/reviews_widget_iframe?did=5049&format=html&header_text=Goodreads+reviews+for+&isbn='
+                .$isbn.'&links=660&min_rating=&num_reviews=&review_back=ffffff&stars=000000&stylesheet=&text=444" width="575" height="400" frameborder="0"></iframe>
+            </div>	
+	    </div>');
     }
 }
 
