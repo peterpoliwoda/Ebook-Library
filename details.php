@@ -17,9 +17,8 @@
 			</ul>
 		</div>
 	<div id="books_container">
-	<?php
-  		$utils = new Utils();
-			
+		<?php
+			$utils = new Utils();
 			if (!isset($_GET['isbn'])) {
 					print_r('No book found.');
 			} else {
@@ -27,7 +26,7 @@
 					$utils->showBookDetails($book);
 					$utils->showGoodreadsComments($_GET['isbn']);
 			}
-	?>
+		?>
 	</div>
 	</body>
 </html>

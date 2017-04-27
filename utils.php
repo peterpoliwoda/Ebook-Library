@@ -40,7 +40,7 @@ class Utils {
         return $output;
 	}
 
-  function getFolderContents($path) {
+  public function getFolderContents($path) {
         if(!isset($path)) {
             $path = '.';
         }
@@ -224,7 +224,7 @@ class Utils {
         $rating = ($book['rating'] == 'No rating') ? 'No rating' : ($book['rating'].' ★ 5');
         $smallerTitle = (substr($book['title'], - 5) == '.mobi') ? 'title_smaller' : '';
 
-        $gridHTML = '<div class="'.$recentStyle.'">
+        $gridHTML = '<div class="grid '.$recentStyle.'">
             <div class="book">
                 <div class="thumbnail">
                     <a href="details.php?isbn='.$book['isbn'].'">
@@ -248,27 +248,28 @@ class Utils {
     function getListViewItem($book) {
         $recentStyle = (strtotime(date('c')) - (strtotime($book['modified'])) < 259200) ? 'item_recent' : 'item';
         $rating = ($book['rating'] == 'No rating') ? 'No rating' : 'Rating <br />'.($book['rating'].' / 5');
-        return '<div class="'.$recentStyle.'">
+        return '<div class="list '.$recentStyle.'">
 		        <div class="book_list">
-                <div class="thumbnail_list">
-                    <a href="details.php?isbn='.$book['isbn'].'">
-                        <img src="'.$book['thumbnail'].'" border="0" width="72" height="110" alt="thumbnail" />
-                    </a>
+                    <div class="thumbnail_list">
+                        <a href="details.php?isbn='.$book['isbn'].'">
+                            <img src="'.$book['thumbnail'].'" border="0" width="72" height="110" alt="thumbnail" />
+                        </a>
+                    </div>
+                    <div class="desc_list">
+                        <div class="rating">'.$rating.'</div>
+                        <a href="details.php?isbn='.$book['isbn'].'">
+                            <span class="title_list">'.$book['title'].'</span>
+                        </a><br />
+                        <span class="author_list">'.$book['author'].'</span><br/>
+                        <a href="index.php?sort=language&display=list"><img src="images/lang/'.$book['lang'].'.gif" /></a>
+                        '.$book['year'].' - 
+                        <a href="index.php?sort=pages&display=list" class="publisher">'.$book['pages'].' pages</a><br />
+                        <span class="modified">Last Modified: '.$book['modified'].'</span><br/>
+                        <p>'.$book['description'].'</p>
+                    </div>
                 </div>
-                <div class="desc_list">
-                    <div class="rating">'.$rating.'</div>
-                    <a href="details.php?isbn='.$book['isbn'].'">
-                        <span class="title_list">'.$book['title'].'</span>
-                    </a><br />
-                    <span class="author_list">'.$book['author'].'</span><br/>
-                    <a href="index.php?sort=language&display=list"><img src="images/lang/'.$book['lang'].'.gif" /></a>
-                    '.$book['year'].' - 
-                    <a href="index.php?sort=pages&display=list" class="publisher">'.$book['pages'].' pages</a><br />
-                    <span class="modified">Last Modified: '.$book['modified'].'</span><br/>
-                    <p>'.$book['description'].'</p>
-				        </div>
-            </div>
-				</div>';
+                <div style="clear:both"></div>
+            </div>';
     }
 
     public function showBookDetails($book) {
@@ -294,7 +295,7 @@ class Utils {
                 <span class="author">'.$book['author'].'</span><br />
             <span class="publisher">'
                 // .$publisher.' '.$item['volumeInfo']['publishedDate']
-                .' - '.$book['pages'].' pages
+                .$book['year'].' - '.$book['pages'].' pages
             </span><br />
             <img src="images/lang/'.$book['lang'].'.gif" /><br />
                 <span class="rating">'.$rating.'</span> <br />

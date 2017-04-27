@@ -4,8 +4,9 @@ body {
 	margin: 0px;
 }
 
-a:link {
+a {
 	text-decoration: none;
+	color: #382110;
 }
 
 /* Top menu  */
@@ -60,11 +61,18 @@ a:link {
 
 .item {
 	border: 5px #1e5799 solid;
-	min-height: 260px;
-	float: left;
 	display: block;
 	margin: 5px;
 	padding: 5px;
+}
+
+.grid {
+	float: left;
+}
+
+.list {
+	clear: both;
+	width: 90%;
 }
 
 .item_recent:hover {
@@ -111,6 +119,7 @@ a:link {
 	padding: 5px;
 	clear:both;
 	width: 95%;
+	min-height: 200px;
 }
 
 .list_item:hover {
@@ -126,12 +135,15 @@ a:link {
 
 .book {
 	width: 150px;
+	height: 260px;
 	text-align: center;
 }
 
 .book_list {
 	text-align: center;
 	clear: both;
+	width: 100%;
+	min-height: 200px;
 }
 
 .books_container {
@@ -176,24 +188,25 @@ a:link {
 	margin-top: 10px;
 	border: 1px #000 solid;
 	background-color: #FFF;
-	}
+}
 
 .desc_list {
-	text-align: left;
+	text-align: justify;
 	display: inline-block;
 	margin-top: 10px;
 	margin-left: 10px;
 	padding: 10px;
 	float: left;
 	width: 70%;
-	}
+	text-overflow: ellipsis;
+}
 
 
 .desc_detailed {
 	width: 300px;
 	text-align: center;
 	float: right;
-	}
+}
 
 .description {
 	width: 300px;
@@ -206,28 +219,28 @@ a:link {
 .thumb_border{
 	border: 1px #000 solid;
 	padding: 10px;
-	}
+}
 	
 .more_info {
 	float: left;
 	width: 150px;
 	margin-top: 30px;	
-	}
+}
 
 
-.author{
+.author {
 	font-size: 12px;
 	font-weight: bold;
 	font-family: Arial, Helvetica, sans-serif;
 	color: #CC713C;
-	}
+}
 	
-.author_list{
+.author_list {
 	font-size: 12px;
 	font-weight: bold;
 	font-family: Arial, Helvetica, sans-serif;
 	color: #CC713C;
-	}
+}
 
 .rating {
 	font-size: 14px;

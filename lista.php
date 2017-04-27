@@ -1,85 +1,44 @@
+<?php
+	require_once('utils.php');
+?>
 <html>
 <head>
 <title>.:: Download Site ::.</title>
-<link rel="stylesheet" type="text/css" href="abc/styles.css">
-<script type="text/javascript">
-function enact(what){
-     var p = what.parentNode;
-     var els = p.getElementsByTagName('li');
-     for(i=0;i<els.length;i++){
-          els[i].className = '';
-     }
-     what.className = 'active';
-}
-</script>
+<link rel="stylesheet" type="text/css" href="images/styles.css">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/> <!--320-->
 </head>
 <body>
- <?php
-    if(isset($_GET['path']))
-		$path = $_GET['path'];
+ <?php    
+    $utils = new Utils();
+    $allFiles = $utils->getFolderContents('.');
 
-    if(!isset($path))
-    {
-        $path = ".";
-    }
+        print_r ('<table style="margin: 0 auto; width: 50%; margin-top: 30px; padding: 20px; border-top: 1px solid #EEE;">'
+		    .'<td style="padding-left: 10px" colspan="2"><strong>File Name</strong></td>'
+            .'<td style="text-align: center;"><strong>Size</strong></td></tr>');
 
-    if ($handle = opendir($path))
-    {
-        $curDir = substr($path, (strrpos(dirname($path."/."),"/")+1));
-        print "************************<br>";
-        print " Directory: ".dirname($path."/.")." <br>************************<br>";
+        $fileIcons = ['png', 'mobi', 'zip', 'exe'];
+        foreach ($allFiles as $file) {
+            if ($file != '.' && $file != '..' && substr($file, - 3) != 'php'
+                && substr($file, 0, 1) != '.') {
+                if (!is_dir($file)) {
+                    $extaz = pathinfo($file);
+                    if (strlen($extaz['basename']) > 3)
+                        $ext = $extaz['extension'];
+                    if (in_array($ext, $fileIcons))
+                        $img = $ext.'.png';
+                    else
+                        $img = 'file.png';
 
-		print "<table>";
-		print "<tr><td></td><td style=\"padding-left: 10px\">File Name</td><td style=\"text-align: center;\">Size</td></tr>";
-		$up = substr($path, 0, (strrpos(dirname($path."/."),"/")));
-        print "[^]  <a href='index.php?path=$up'>[..]</a><br>";
-
-        while (false !== ($file = readdir($handle)))
-        {
-            if ($file != "." && $file != ".." && substr($file,-3) != "php")
-            {
-                $fName = $file;
-				$extaz = pathinfo($fName);
-
-				if(strlen($extaz['basename']) > 3)
-					$ext = $extaz['extension'];
-
-				switch($ext){
-					case "png":
-						$img = "png.png";
-						break;
-					case "mobi":
-						$img = "mobi.png";
-						break;
-					case "zip":
-						$img = "zip.gif";
-						break;
-					case "exe":
-						$img = "exe.png";
-						break;
-					default:
-						$img = "file.png";
-
-				}
-
-                $file = $path.'/'.$file;
-                if(is_file($file) && $fName != "index.php")
-                {
-                    print "<tr class=\"row\"><td align=\"center\"><img src=\"abc/$img\" /></td><td> <a href='".$file."'><ul class=\"rowlink\"><li onclick=\"enact(this);\">".$fName."</li></ul></a>    </td><td align=\"right\">". filesize($file)."B <br> </td></tr>";
-                }
-                if(is_dir($file))
-
-                {
-                    print "<tr><td align=\"center\"><img src=\"abc/dir.png\" /></td><td style=\"padding-left: 10px\"><a href='ex2.php?path=$file'>$fName</a><br></td><td>";
+                    if (is_file($file) && $file != 'index.php') {
+                        print_r('<tr><td style="height: 10px; padding: 7px;" align="center">'
+                            .'<img src="images/icons/'.$img.'" /></td>'
+                            .'<td><a href="'.$file.'">'.$file.'</a></td>'
+                            .'<td align="right">'.intval(filesize($file) / 1000).'kB'.'</td></tr>');
+                    }
                 }
             }
         }
-
-
-        closedir($handle);
-		print "</table>";
-    }
+		print_r ('</table>');
  ?>
  </body>
  </html>
