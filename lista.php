@@ -16,7 +16,7 @@
 		    .'<td style="padding-left: 10px" colspan="2"><strong>File Name</strong></td>'
             .'<td style="text-align: center;"><strong>Size</strong></td></tr>');
 
-        $fileIcons = ['png', 'mobi', 'zip', 'exe'];
+        $fileIcons = array('png', 'mobi', 'zip', 'exe');
         foreach ($allFiles as $file) {
             if ($file != '.' && $file != '..' && substr($file, - 3) != 'php'
                 && substr($file, 0, 1) != '.') {

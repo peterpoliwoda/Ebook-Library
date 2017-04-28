@@ -29,7 +29,7 @@ if(isset($_GET) && count($_GET) > 0) {
         <link rel="stylesheet" type="text/css" href="images/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="images/styles.css">
         <link href="images/favicon.png" rel="SHORTCUT ICON">
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/> <!--320 / 600x800-->
+        <meta name="viewport" content="width=device-width, initial-scale=1"/> <!--320 / 600x800-->
         <link rel="stylesheet" type="text/css" href="images/styles.css">
     </head>
 	  <body>
@@ -57,5 +57,8 @@ if(isset($_GET) && count($_GET) > 0) {
         ?>
       </div>
 	  </div>
+    <div class="footer">
+      <a href="lista.php">Show file list</a>
+    </div>
 	</body>
 </html>

@@ -1,19 +1,5 @@
 <?php
 
-/*
-  Book Entry Headings:
-  - ISBN
-  - LANG
-  - Thumbnail
-  - Author
-  - Title
-  - Rating
-  - Year
-  - Pages
-  - Description
-  - Last Modified
-*/
-
 class Utils {
 
     public $numberOfQueries;
@@ -71,7 +57,8 @@ class Utils {
                 }
             }
         }
-        return $this->getBooksFromGoogle($book)[0];
+        $singleBook = $this->getBooksFromGoogle($book);
+        return $singleBook[0];
     }
 
     public function getBooks() {
@@ -219,27 +206,36 @@ class Utils {
         return $html;
     }
 
+    function getRating($rating) {
+        if ($rating !== 'No rating') {
+            $stars = '';
+            for ($i = 0; $i < round($rating); $i++) {
+                $stars .= '★';
+            }
+            for ($i = 0; $i < (5 - round($rating)); $i++) {
+                $stars .= '☆';
+            }
+            return $stars;
+        } else {
+            return $rating;
+        }
+    }
+
     function getGridViewItem($book) {
         $recentStyle = (strtotime(date('c')) - (strtotime($book['modified'])) < 259200) ? 'item_recent' : 'item';
-        $rating = ($book['rating'] == 'No rating') ? 'No rating' : ($book['rating'].' ★ 5');
+        $rating = $this->getRating($book['rating']);
         $smallerTitle = (substr($book['title'], - 5) == '.mobi') ? 'title_smaller' : '';
 
-        $gridHTML = '<div class="grid '.$recentStyle.'">
-            <div class="book">
-                <div class="thumbnail">
-                    <a href="details.php?isbn='.$book['isbn'].'">
-                        <img src="'.$book['thumbnail'].'" border="0" width="128" height="156" alt="thumbnail"/>
-                    </a>
-                </div>
-                <div class="desc">
-                    <span class="rating">'.$rating.'</span><br />
-                    <a href="details.php?isbn='.$book['isbn'].'">
-                        <span class="title '.$smallerTitle.'">'.$book['title'].'</span>
-                    </a><br />';
-                    if ($book['author'])
-                        $gridHTML .= '<span class="author">'.$book['author'].'</span><br />';
-                    $gridHTML .= '<img src="images/lang/'.$book['lang'].'.gif" />
-                </div>
+        $gridHTML = '<div class="grid '.$recentStyle.'" style="background-image: url('.$book['thumbnail'].')">
+            <div class="desc">
+
+                <a href="details.php?isbn='.$book['isbn'].'">
+                    <span class="title '.$smallerTitle.'">'.$book['title'].'</span>
+                </a><br />';
+                if ($book['author'])
+                    $gridHTML .= '<span class="author">'.$book['author'].'</span><br />';
+                $gridHTML .= '<img src="images/lang/'.$book['lang'].'.gif" /><br>
+                <span class="rating">'.$rating.'</span>
             </div>
         </div>';
         return $gridHTML;
@@ -247,7 +243,7 @@ class Utils {
 
     function getListViewItem($book) {
         $recentStyle = (strtotime(date('c')) - (strtotime($book['modified'])) < 259200) ? 'item_recent' : 'item';
-        $rating = ($book['rating'] == 'No rating') ? 'No rating' : 'Rating <br />'.($book['rating'].' / 5');
+        $rating = ($book['rating'] == 'No rating') ? 'No rating' : 'Rating <br />'.($book['rating']);
         return '<div class="list '.$recentStyle.'">
 		        <div class="book_list">
                     <div class="thumbnail_list">
@@ -273,15 +269,15 @@ class Utils {
     }
 
     public function showBookDetails($book) {
-        $rating = ($book['rating'] == 'No rating') ? 'No rating' : 'Rating <br />'.($book['rating'].' / 5');
+        $rating = $this->getRating($book['rating']) . '<br/> ('.$book['rating']. ' / 5)';
         print_r('<div class="book_detailed">
             <div class="thumbnail_detailed">
-            <div class="thumb_border">
-                <a href="'.$book['filename'].'">
-                    <img src="'.$book['thumbnail'].'" border="0" width="128" height="156" alt="thumb"/> <br/>
-                    Download
-                </a>
-            </div>
+                <div class="thumb_border">
+                    <a href="'.$book['filename'].'">
+                        <img src="'.$book['thumbnail'].'" border="0" width="128" height="156" alt="thumb"/> <br/>
+                        Download ('.intval(filesize($book['filename']) / 1000).'kB)
+                    </a>
+                </div>
                 <div class="more_info">
                     <p><a href="http://www.goodreads.com/book/isbn/'.$book['isbn'].'" title="Goodreads">
                     <img src="images/read_reviews_goodreads.png" border="0"></a></p>			
@@ -291,17 +287,16 @@ class Utils {
             </div>
             
             <div class="desc_detailed">
-                <strong>'.$book['title'].'</strong><br>
-                <span class="author">'.$book['author'].'</span><br />
-            <span class="publisher">'
-                // .$publisher.' '.$item['volumeInfo']['publishedDate']
-                .$book['year'].' - '.$book['pages'].' pages
-            </span><br />
-            <img src="images/lang/'.$book['lang'].'.gif" /><br />
-                <span class="rating">'.$rating.'</span> <br />
-            </div>
-            <div class="description">
-                '.$book['description'].'
+                <h2>'.$book['title'].'</h2>
+                <div class="author">'.$book['author'].'</div>
+                <div>'
+                    .$book['year'].' - '.$book['pages'].' pages
+                </div>
+                <img src="images/lang/'.$book['lang'].'.gif" /><br />
+                <div>'.$rating.'</div>
+                <div class="description">
+                    '.$book['description'].'
+                </div>
             </div>
         </div>');
     }
