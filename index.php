@@ -45,20 +45,18 @@ if(isset($_GET) && count($_GET) > 0) {
       </div>
       <div class="books_container">
         <?php
-            $utils = new Utils();
-            $allBooks = $utils->getBooks();
-            $booksFromGoogle = $utils->getBooksFromGoogle($allBooks);
-            $sortedBooks = $utils->sort($booksFromGoogle, $sortuj);
+            $utils = new Utils($sortuj);
 
             print('<p class="books_header"> <strong>Books: </strong>'. $utils->totalBooks);
             print('<strong style="padding-left: 20px">Google Queries: </strong>'.$utils->numberOfQueries.'</p>');
 
-            print_r($utils->getBookListHTML($sortedBooks, $disp));
+            print_r($utils->getBookListHTML($disp));
         ?>
       </div>
 	  </div>
     <div class="footer">
       <a href="lista.php">Show file list</a>
     </div>
+    <script type="text/javascript" src="color-thief.min.js"></script>
 	</body>
 </html>

@@ -9,6 +9,8 @@
 		<link rel="stylesheet" type="text/css" href="images/styles.css">
 		<link href="images/favicon.png" rel="SHORTCUT ICON">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/> <!--320-->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script type="text/javascript" src="images/color-thief.min.js"></script>
 	</head>
 	<body>
 		<div id="library-menu">
@@ -22,11 +24,26 @@
 			if (!isset($_GET['isbn'])) {
 					print_r('No book found.');
 			} else {
-					$book = $utils->getBook($_GET['isbn']);
-					$utils->showBookDetails($book);
-					$utils->showGoodreadsComments($_GET['isbn']);
+				$book = $utils->getBook($_GET['isbn']);
+				$utils->showBookDetails($book);
+				$utils->showGoodreadsComments($_GET['isbn']);
 			}
 		?>
 	</div>
+	<script type="text/javascript">
+		document.querySelector('img').addEventListener('load', function() {
+	
+			var colorThief = new ColorThief();
+			var bookThumbnail = document.getElementById('thumbnail');
+			bookThumbnail.setAttribute('crossOrigin', '');
+			console.log('image source', bookThumbnail);
+			var bookColor = colorThief.getColor(bookThumbnail);
+			console.log('BookColor', bookColor);
+
+			$('#books_container').css('background', 'rgb(' + bookColor[0] + 
+			','+ bookColor[0] + ',' + bookColor[0] + ')');
+
+		});
+	</script>
 	</body>
 </html>
